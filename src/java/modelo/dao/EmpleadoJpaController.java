@@ -10,15 +10,15 @@ import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import modelo.entidades.TipoEmpleado;
+import modelo.entidades.Horario;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import modelo.dao.exceptions.NonexistentEntityException;
+import modelo.entidades.TipoEmpleado;
 import modelo.entidades.Asistencia;
 import modelo.entidades.Empleado;
-import modelo.entidades.Horario;
 
 /**
  *
@@ -36,19 +36,25 @@ public class EmpleadoJpaController implements Serializable {
 	}
 
 	public void create(Empleado empleado) {
+		if (empleado.getHorarioList() == null) {
+			empleado.setHorarioList(new ArrayList<Horario>());
+		}
 		if (empleado.getTipoEmpleadoList() == null) {
 			empleado.setTipoEmpleadoList(new ArrayList<TipoEmpleado>());
 		}
 		if (empleado.getAsistenciaList() == null) {
 			empleado.setAsistenciaList(new ArrayList<Asistencia>());
 		}
-		if (empleado.getHorarioList() == null) {
-			empleado.setHorarioList(new ArrayList<Horario>());
-		}
 		EntityManager em = null;
 		try {
 			em = getEntityManager();
 			em.getTransaction().begin();
+			List<Horario> attachedHorarioList = new ArrayList<Horario>();
+			for (Horario horarioListHorarioToAttach : empleado.getHorarioList()) {
+				horarioListHorarioToAttach = em.getReference(horarioListHorarioToAttach.getClass(), horarioListHorarioToAttach.getIdHorario());
+				attachedHorarioList.add(horarioListHorarioToAttach);
+			}
+			empleado.setHorarioList(attachedHorarioList);
 			List<TipoEmpleado> attachedTipoEmpleadoList = new ArrayList<TipoEmpleado>();
 			for (TipoEmpleado tipoEmpleadoListTipoEmpleadoToAttach : empleado.getTipoEmpleadoList()) {
 				tipoEmpleadoListTipoEmpleadoToAttach = em.getReference(tipoEmpleadoListTipoEmpleadoToAttach.getClass(), tipoEmpleadoListTipoEmpleadoToAttach.getIdTipoEmpleado());
@@ -61,13 +67,16 @@ public class EmpleadoJpaController implements Serializable {
 				attachedAsistenciaList.add(asistenciaListAsistenciaToAttach);
 			}
 			empleado.setAsistenciaList(attachedAsistenciaList);
-			List<Horario> attachedHorarioList = new ArrayList<Horario>();
-			for (Horario horarioListHorarioToAttach : empleado.getHorarioList()) {
-				horarioListHorarioToAttach = em.getReference(horarioListHorarioToAttach.getClass(), horarioListHorarioToAttach.getIdHorario());
-				attachedHorarioList.add(horarioListHorarioToAttach);
-			}
-			empleado.setHorarioList(attachedHorarioList);
 			em.persist(empleado);
+			for (Horario horarioListHorario : empleado.getHorarioList()) {
+				Empleado oldIdEmpleadoOfHorarioListHorario = horarioListHorario.getIdEmpleado();
+				horarioListHorario.setIdEmpleado(empleado);
+				horarioListHorario = em.merge(horarioListHorario);
+				if (oldIdEmpleadoOfHorarioListHorario != null) {
+					oldIdEmpleadoOfHorarioListHorario.getHorarioList().remove(horarioListHorario);
+					oldIdEmpleadoOfHorarioListHorario = em.merge(oldIdEmpleadoOfHorarioListHorario);
+				}
+			}
 			for (TipoEmpleado tipoEmpleadoListTipoEmpleado : empleado.getTipoEmpleadoList()) {
 				Empleado oldIdEmpleadoOfTipoEmpleadoListTipoEmpleado = tipoEmpleadoListTipoEmpleado.getIdEmpleado();
 				tipoEmpleadoListTipoEmpleado.setIdEmpleado(empleado);
@@ -86,15 +95,6 @@ public class EmpleadoJpaController implements Serializable {
 					oldIdEmpleadoOfAsistenciaListAsistencia = em.merge(oldIdEmpleadoOfAsistenciaListAsistencia);
 				}
 			}
-			for (Horario horarioListHorario : empleado.getHorarioList()) {
-				Empleado oldIdEmpleadoOfHorarioListHorario = horarioListHorario.getIdEmpleado();
-				horarioListHorario.setIdEmpleado(empleado);
-				horarioListHorario = em.merge(horarioListHorario);
-				if (oldIdEmpleadoOfHorarioListHorario != null) {
-					oldIdEmpleadoOfHorarioListHorario.getHorarioList().remove(horarioListHorario);
-					oldIdEmpleadoOfHorarioListHorario = em.merge(oldIdEmpleadoOfHorarioListHorario);
-				}
-			}
 			em.getTransaction().commit();
 		} finally {
 			if (em != null) {
@@ -109,12 +109,19 @@ public class EmpleadoJpaController implements Serializable {
 			em = getEntityManager();
 			em.getTransaction().begin();
 			Empleado persistentEmpleado = em.find(Empleado.class, empleado.getIdEmpleado());
+			List<Horario> horarioListOld = persistentEmpleado.getHorarioList();
+			List<Horario> horarioListNew = empleado.getHorarioList();
 			List<TipoEmpleado> tipoEmpleadoListOld = persistentEmpleado.getTipoEmpleadoList();
 			List<TipoEmpleado> tipoEmpleadoListNew = empleado.getTipoEmpleadoList();
 			List<Asistencia> asistenciaListOld = persistentEmpleado.getAsistenciaList();
 			List<Asistencia> asistenciaListNew = empleado.getAsistenciaList();
-			List<Horario> horarioListOld = persistentEmpleado.getHorarioList();
-			List<Horario> horarioListNew = empleado.getHorarioList();
+			List<Horario> attachedHorarioListNew = new ArrayList<Horario>();
+			for (Horario horarioListNewHorarioToAttach : horarioListNew) {
+				horarioListNewHorarioToAttach = em.getReference(horarioListNewHorarioToAttach.getClass(), horarioListNewHorarioToAttach.getIdHorario());
+				attachedHorarioListNew.add(horarioListNewHorarioToAttach);
+			}
+			horarioListNew = attachedHorarioListNew;
+			empleado.setHorarioList(horarioListNew);
 			List<TipoEmpleado> attachedTipoEmpleadoListNew = new ArrayList<TipoEmpleado>();
 			for (TipoEmpleado tipoEmpleadoListNewTipoEmpleadoToAttach : tipoEmpleadoListNew) {
 				tipoEmpleadoListNewTipoEmpleadoToAttach = em.getReference(tipoEmpleadoListNewTipoEmpleadoToAttach.getClass(), tipoEmpleadoListNewTipoEmpleadoToAttach.getIdTipoEmpleado());
@@ -129,14 +136,24 @@ public class EmpleadoJpaController implements Serializable {
 			}
 			asistenciaListNew = attachedAsistenciaListNew;
 			empleado.setAsistenciaList(asistenciaListNew);
-			List<Horario> attachedHorarioListNew = new ArrayList<Horario>();
-			for (Horario horarioListNewHorarioToAttach : horarioListNew) {
-				horarioListNewHorarioToAttach = em.getReference(horarioListNewHorarioToAttach.getClass(), horarioListNewHorarioToAttach.getIdHorario());
-				attachedHorarioListNew.add(horarioListNewHorarioToAttach);
-			}
-			horarioListNew = attachedHorarioListNew;
-			empleado.setHorarioList(horarioListNew);
 			empleado = em.merge(empleado);
+			for (Horario horarioListOldHorario : horarioListOld) {
+				if (!horarioListNew.contains(horarioListOldHorario)) {
+					horarioListOldHorario.setIdEmpleado(null);
+					horarioListOldHorario = em.merge(horarioListOldHorario);
+				}
+			}
+			for (Horario horarioListNewHorario : horarioListNew) {
+				if (!horarioListOld.contains(horarioListNewHorario)) {
+					Empleado oldIdEmpleadoOfHorarioListNewHorario = horarioListNewHorario.getIdEmpleado();
+					horarioListNewHorario.setIdEmpleado(empleado);
+					horarioListNewHorario = em.merge(horarioListNewHorario);
+					if (oldIdEmpleadoOfHorarioListNewHorario != null && !oldIdEmpleadoOfHorarioListNewHorario.equals(empleado)) {
+						oldIdEmpleadoOfHorarioListNewHorario.getHorarioList().remove(horarioListNewHorario);
+						oldIdEmpleadoOfHorarioListNewHorario = em.merge(oldIdEmpleadoOfHorarioListNewHorario);
+					}
+				}
+			}
 			for (TipoEmpleado tipoEmpleadoListOldTipoEmpleado : tipoEmpleadoListOld) {
 				if (!tipoEmpleadoListNew.contains(tipoEmpleadoListOldTipoEmpleado)) {
 					tipoEmpleadoListOldTipoEmpleado.setIdEmpleado(null);
@@ -171,23 +188,6 @@ public class EmpleadoJpaController implements Serializable {
 					}
 				}
 			}
-			for (Horario horarioListOldHorario : horarioListOld) {
-				if (!horarioListNew.contains(horarioListOldHorario)) {
-					horarioListOldHorario.setIdEmpleado(null);
-					horarioListOldHorario = em.merge(horarioListOldHorario);
-				}
-			}
-			for (Horario horarioListNewHorario : horarioListNew) {
-				if (!horarioListOld.contains(horarioListNewHorario)) {
-					Empleado oldIdEmpleadoOfHorarioListNewHorario = horarioListNewHorario.getIdEmpleado();
-					horarioListNewHorario.setIdEmpleado(empleado);
-					horarioListNewHorario = em.merge(horarioListNewHorario);
-					if (oldIdEmpleadoOfHorarioListNewHorario != null && !oldIdEmpleadoOfHorarioListNewHorario.equals(empleado)) {
-						oldIdEmpleadoOfHorarioListNewHorario.getHorarioList().remove(horarioListNewHorario);
-						oldIdEmpleadoOfHorarioListNewHorario = em.merge(oldIdEmpleadoOfHorarioListNewHorario);
-					}
-				}
-			}
 			em.getTransaction().commit();
 		} catch (Exception ex) {
 			String msg = ex.getLocalizedMessage();
@@ -217,6 +217,11 @@ public class EmpleadoJpaController implements Serializable {
 			} catch (EntityNotFoundException enfe) {
 				throw new NonexistentEntityException("The empleado with id " + id + " no longer exists.", enfe);
 			}
+			List<Horario> horarioList = empleado.getHorarioList();
+			for (Horario horarioListHorario : horarioList) {
+				horarioListHorario.setIdEmpleado(null);
+				horarioListHorario = em.merge(horarioListHorario);
+			}
 			List<TipoEmpleado> tipoEmpleadoList = empleado.getTipoEmpleadoList();
 			for (TipoEmpleado tipoEmpleadoListTipoEmpleado : tipoEmpleadoList) {
 				tipoEmpleadoListTipoEmpleado.setIdEmpleado(null);
@@ -226,11 +231,6 @@ public class EmpleadoJpaController implements Serializable {
 			for (Asistencia asistenciaListAsistencia : asistenciaList) {
 				asistenciaListAsistencia.setIdEmpleado(null);
 				asistenciaListAsistencia = em.merge(asistenciaListAsistencia);
-			}
-			List<Horario> horarioList = empleado.getHorarioList();
-			for (Horario horarioListHorario : horarioList) {
-				horarioListHorario.setIdEmpleado(null);
-				horarioListHorario = em.merge(horarioListHorario);
 			}
 			em.remove(empleado);
 			em.getTransaction().commit();

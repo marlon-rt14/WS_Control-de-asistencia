@@ -75,11 +75,11 @@ public class Empleado implements Serializable {
         @Column(name = "clave")
 	private String clave;
 	@OneToMany(mappedBy = "idEmpleado")
+	private List<Horario> horarioList;
+	@OneToMany(mappedBy = "idEmpleado")
 	private List<TipoEmpleado> tipoEmpleadoList;
 	@OneToMany(mappedBy = "idEmpleado")
 	private List<Asistencia> asistenciaList;
-	@OneToMany(mappedBy = "idEmpleado")
-	private List<Horario> horarioList;
 
 	public Empleado() {
 	}
@@ -154,6 +154,15 @@ public class Empleado implements Serializable {
 	}
 
 	@XmlTransient
+	public List<Horario> getHorarioList() {
+		return horarioList;
+	}
+
+	public void setHorarioList(List<Horario> horarioList) {
+		this.horarioList = horarioList;
+	}
+
+	@XmlTransient
 	public List<TipoEmpleado> getTipoEmpleadoList() {
 		return tipoEmpleadoList;
 	}
@@ -169,15 +178,6 @@ public class Empleado implements Serializable {
 
 	public void setAsistenciaList(List<Asistencia> asistenciaList) {
 		this.asistenciaList = asistenciaList;
-	}
-
-	@XmlTransient
-	public List<Horario> getHorarioList() {
-		return horarioList;
-	}
-
-	public void setHorarioList(List<Horario> horarioList) {
-		this.horarioList = horarioList;
 	}
 
 	@Override

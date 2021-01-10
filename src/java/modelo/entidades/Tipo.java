@@ -48,7 +48,9 @@ public class Tipo implements Serializable {
         @Column(name = "descripcion_tipo")
 	private String descripcionTipo;
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "idTipo")
-	private List<FechaHabil> fechaHabilList;
+	private List<FechaHabil> fechaHabileList;
+	@OneToMany(mappedBy = "idTipo")
+	private List<Jornada> jornadaList;
 	@OneToMany(mappedBy = "idTipo")
 	private List<TipoEmpleado> tipoEmpleadoList;
 
@@ -81,12 +83,21 @@ public class Tipo implements Serializable {
 	}
 
 	@XmlTransient
-	public List<FechaHabil> getFechaHabilList() {
-		return fechaHabilList;
+	public List<FechaHabil> getFechaHabileList() {
+		return fechaHabileList;
 	}
 
-	public void setFechaHabilList(List<FechaHabil> fechaHabilList) {
-		this.fechaHabilList = fechaHabilList;
+	public void setFechaHabileList(List<FechaHabil> fechaHabileList) {
+		this.fechaHabileList = fechaHabileList;
+	}
+
+	@XmlTransient
+	public List<Jornada> getJornadaList() {
+		return jornadaList;
+	}
+
+	public void setJornadaList(List<Jornada> jornadaList) {
+		this.jornadaList = jornadaList;
 	}
 
 	@XmlTransient

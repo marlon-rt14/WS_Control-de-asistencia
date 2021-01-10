@@ -34,9 +34,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "fechas_habiles")
 @XmlRootElement
 @NamedQueries({
-	@NamedQuery(name = "FechaHabil.findAll", query = "SELECT f FROM FechaHabil f"),
-	@NamedQuery(name = "FechaHabil.findByIdFechaHabil", query = "SELECT f FROM FechaHabil f WHERE f.idFechaHabil = :idFechaHabil"),
-	@NamedQuery(name = "FechaHabil.findByFecha", query = "SELECT f FROM FechaHabil f WHERE f.fecha = :fecha")})
+	@NamedQuery(name = "FechaHabile.findAll", query = "SELECT f FROM FechaHabile f"),
+	@NamedQuery(name = "FechaHabile.findByIdFechaHabil", query = "SELECT f FROM FechaHabile f WHERE f.idFechaHabil = :idFechaHabil"),
+	@NamedQuery(name = "FechaHabile.findByFecha", query = "SELECT f FROM FechaHabile f WHERE f.fecha = :fecha")})
 public class FechaHabil implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -123,7 +123,7 @@ public class FechaHabil implements Serializable {
 
 	@Override
 	public String toString() {
-		return "modelo.entidades.FechaHabil[ idFechaHabil=" + idFechaHabil + " ]";
+		return "modelo.entidades.FechaHabile[ idFechaHabil=" + idFechaHabil + " ]";
 	}
 	
 }

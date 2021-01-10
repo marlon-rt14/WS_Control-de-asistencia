@@ -14,6 +14,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -66,6 +68,9 @@ public class Jornada implements Serializable {
         @Column(name = "sale_segundo_periodo")
         @Temporal(TemporalType.TIME)
 	private Date saleSegundoPeriodo;
+	@JoinColumn(name = "id_tipo", referencedColumnName = "id_tipo")
+        @ManyToOne
+	private Tipo idTipo;
 	@OneToMany(mappedBy = "idJornada")
 	private List<TipoEmpleado> tipoEmpleadoList;
 
@@ -122,6 +127,14 @@ public class Jornada implements Serializable {
 
 	public void setSaleSegundoPeriodo(Date saleSegundoPeriodo) {
 		this.saleSegundoPeriodo = saleSegundoPeriodo;
+	}
+
+	public Tipo getIdTipo() {
+		return idTipo;
+	}
+
+	public void setIdTipo(Tipo idTipo) {
+		this.idTipo = idTipo;
 	}
 
 	@XmlTransient

@@ -10,6 +10,7 @@ import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import modelo.entidades.Tipo;
 import modelo.entidades.TipoEmpleado;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +42,11 @@ public class JornadaJpaController implements Serializable {
 		try {
 			em = getEntityManager();
 			em.getTransaction().begin();
+			Tipo idTipo = jornada.getIdTipo();
+			if (idTipo != null) {
+				idTipo = em.getReference(idTipo.getClass(), idTipo.getIdTipo());
+				jornada.setIdTipo(idTipo);
+			}
 			List<TipoEmpleado> attachedTipoEmpleadoList = new ArrayList<TipoEmpleado>();
 			for (TipoEmpleado tipoEmpleadoListTipoEmpleadoToAttach : jornada.getTipoEmpleadoList()) {
 				tipoEmpleadoListTipoEmpleadoToAttach = em.getReference(tipoEmpleadoListTipoEmpleadoToAttach.getClass(), tipoEmpleadoListTipoEmpleadoToAttach.getIdTipoEmpleado());
@@ -48,6 +54,10 @@ public class JornadaJpaController implements Serializable {
 			}
 			jornada.setTipoEmpleadoList(attachedTipoEmpleadoList);
 			em.persist(jornada);
+			if (idTipo != null) {
+				idTipo.getJornadaList().add(jornada);
+				idTipo = em.merge(idTipo);
+			}
 			for (TipoEmpleado tipoEmpleadoListTipoEmpleado : jornada.getTipoEmpleadoList()) {
 				Jornada oldIdJornadaOfTipoEmpleadoListTipoEmpleado = tipoEmpleadoListTipoEmpleado.getIdJornada();
 				tipoEmpleadoListTipoEmpleado.setIdJornada(jornada);
@@ -71,8 +81,14 @@ public class JornadaJpaController implements Serializable {
 			em = getEntityManager();
 			em.getTransaction().begin();
 			Jornada persistentJornada = em.find(Jornada.class, jornada.getIdJornada());
+			Tipo idTipoOld = persistentJornada.getIdTipo();
+			Tipo idTipoNew = jornada.getIdTipo();
 			List<TipoEmpleado> tipoEmpleadoListOld = persistentJornada.getTipoEmpleadoList();
 			List<TipoEmpleado> tipoEmpleadoListNew = jornada.getTipoEmpleadoList();
+			if (idTipoNew != null) {
+				idTipoNew = em.getReference(idTipoNew.getClass(), idTipoNew.getIdTipo());
+				jornada.setIdTipo(idTipoNew);
+			}
 			List<TipoEmpleado> attachedTipoEmpleadoListNew = new ArrayList<TipoEmpleado>();
 			for (TipoEmpleado tipoEmpleadoListNewTipoEmpleadoToAttach : tipoEmpleadoListNew) {
 				tipoEmpleadoListNewTipoEmpleadoToAttach = em.getReference(tipoEmpleadoListNewTipoEmpleadoToAttach.getClass(), tipoEmpleadoListNewTipoEmpleadoToAttach.getIdTipoEmpleado());
@@ -81,6 +97,14 @@ public class JornadaJpaController implements Serializable {
 			tipoEmpleadoListNew = attachedTipoEmpleadoListNew;
 			jornada.setTipoEmpleadoList(tipoEmpleadoListNew);
 			jornada = em.merge(jornada);
+			if (idTipoOld != null && !idTipoOld.equals(idTipoNew)) {
+				idTipoOld.getJornadaList().remove(jornada);
+				idTipoOld = em.merge(idTipoOld);
+			}
+			if (idTipoNew != null && !idTipoNew.equals(idTipoOld)) {
+				idTipoNew.getJornadaList().add(jornada);
+				idTipoNew = em.merge(idTipoNew);
+			}
 			for (TipoEmpleado tipoEmpleadoListOldTipoEmpleado : tipoEmpleadoListOld) {
 				if (!tipoEmpleadoListNew.contains(tipoEmpleadoListOldTipoEmpleado)) {
 					tipoEmpleadoListOldTipoEmpleado.setIdJornada(null);
@@ -126,6 +150,11 @@ public class JornadaJpaController implements Serializable {
 				jornada.getIdJornada();
 			} catch (EntityNotFoundException enfe) {
 				throw new NonexistentEntityException("The jornada with id " + id + " no longer exists.", enfe);
+			}
+			Tipo idTipo = jornada.getIdTipo();
+			if (idTipo != null) {
+				idTipo.getJornadaList().remove(jornada);
+				idTipo = em.merge(idTipo);
 			}
 			List<TipoEmpleado> tipoEmpleadoList = jornada.getTipoEmpleadoList();
 			for (TipoEmpleado tipoEmpleadoListTipoEmpleado : tipoEmpleadoList) {

@@ -21,6 +21,9 @@ import modelo.entidades.Jornada;
 import modelo.entidades.Materia;
 import modelo.entidades.Tipo;
 import modelo.entidades.TipoEmpleado;
+import modelo.entidades.ViewNombreCompleto;
+import modelo.entidades.VistaDocente;
+import modelo.entidades.VistaJornada;
 import modelo.facadeAsistencia;
 import modelo.facadeAulas;
 import modelo.facadeEmpleados;
@@ -31,6 +34,9 @@ import modelo.facadeJornada;
 import modelo.facadeMateria;
 import modelo.facadeTipoEmpleado;
 import modelo.facadeTipos;
+import modelo.facadeViewDocente;
+import modelo.facadeViewJornada;
+import modelo.facadeViewNombreCompleto;
 import vista.interfaces.IAsistencia;
 import vista.interfaces.IAulas;
 import vista.interfaces.IEmpleados;
@@ -41,13 +47,16 @@ import vista.interfaces.IJornada;
 import vista.interfaces.IMateria;
 import vista.interfaces.ITipoEmpleado;
 import vista.interfaces.ITipos;
+import vista.interfaces.IViewDocente;
+import vista.interfaces.IViewJornada;
+import vista.interfaces.IViewNombreCompleto;
 
 /**
  *
  * @author mjavi
  */
 @WebService(serviceName = "ServicioAsistencia")
-public class ServicioAsistencia implements IAsistencia, IAulas, IEmpleados, IEstados, IFechasHabiles, IHorario, IJornada, IMateria, ITipoEmpleado, ITipos {
+public class ServicioAsistencia implements IAsistencia, IAulas, IEmpleados, IEstados, IFechasHabiles, IHorario, IJornada, IMateria, ITipoEmpleado, ITipos , IViewNombreCompleto, IViewDocente, IViewJornada{
 
 //############################################# ASISTENCIA ##################################
 	@Override
@@ -487,6 +496,44 @@ public class ServicioAsistencia implements IAsistencia, IAulas, IEmpleados, IEst
 		@WebParam(name = "descripcionTipo") String descripcionTipo) {
 		facadeTipos fac = new facadeTipos();
 		return fac.updateTipo(id, descripcionTipo);
+	}
+
+	
+//################################################ VISTAS ######################################
+	@Override
+	public List<ViewNombreCompleto> getListNombresCompletos() {
+		facadeViewNombreCompleto fac = new facadeViewNombreCompleto();
+		return fac.getListNombresCompletos();
+	}
+
+	@Override
+	public ViewNombreCompleto getNombreCompleto(int id) {
+	facadeViewNombreCompleto fac = new facadeViewNombreCompleto();
+		return fac.getNombreCompleto(id);
+	}
+
+	@Override
+	public List<VistaDocente> getListVistaDocente() {
+		facadeViewDocente fac = new facadeViewDocente();
+		return fac.getListVistaDocente();
+	}
+
+	@Override
+	public VistaDocente getVistaDocente(int id) {
+		facadeViewDocente fac = new facadeViewDocente();
+		return fac.getVistaDocente(id);
+	}
+
+	@Override
+	public List<VistaJornada> getListVistaJornada() {
+		facadeViewJornada fac = new facadeViewJornada();
+		return fac.getListVistaJornada();
+	}
+
+	@Override
+	public VistaJornada getVistaJornada(int id) {
+		facadeViewJornada fac = new facadeViewJornada();
+		return fac.getVistaJornada(id);
 	}
 
 }
