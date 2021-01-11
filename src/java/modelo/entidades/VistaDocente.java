@@ -46,7 +46,6 @@ public class VistaDocente implements Serializable {
 	@Id
 	@GeneratedValue
 	
-	
         @NotNull
         @Column(name = "id_empleado")
 	private int idEmpleado;
@@ -124,6 +123,5 @@ public class VistaDocente implements Serializable {
 		return fecha;
 	}
 
-	
 	
 }

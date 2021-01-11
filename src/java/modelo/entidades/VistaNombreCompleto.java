@@ -6,7 +6,6 @@
 package modelo.entidades;
 
 import java.io.Serializable;
-import javax.annotation.Generated;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,16 +24,15 @@ import jdk.nashorn.internal.ir.annotations.Immutable;
  * @author mjavi
  */
 @Entity
-@Table(name = "view_nombre_completo")
+@Table(name = "vista_nombre_completo")
 @Immutable
 @XmlRootElement
 @NamedQueries({
-	@NamedQuery(name = "ViewNombreCompleto.findAll", query = "SELECT v FROM ViewNombreCompleto v"),
-	@NamedQuery(name = "ViewNombreCompleto.findByIdEmpleado", query = "SELECT v FROM ViewNombreCompleto v WHERE v.idEmpleado = :idEmpleado"),
-	@NamedQuery(name = "ViewNombreCompleto.findByNombreEmpleado", query = "SELECT v FROM ViewNombreCompleto v WHERE v.nombreEmpleado = :nombreEmpleado")})
-public class ViewNombreCompleto implements Serializable {
+	@NamedQuery(name = "VistaNombreCompleto.findAll", query = "SELECT v FROM VistaNombreCompleto v"),
+	@NamedQuery(name = "VistaNombreCompleto.findByIdEmpleado", query = "SELECT v FROM VistaNombreCompleto v WHERE v.idEmpleado = :idEmpleado"),
+	@NamedQuery(name = "VistaNombreCompleto.findByNombreEmpleado", query = "SELECT v FROM VistaNombreCompleto v WHERE v.nombreEmpleado = :nombreEmpleado")})
+public class VistaNombreCompleto implements Serializable {
 
-	
 	@Id
 	@GeneratedValue
 	
@@ -45,7 +43,7 @@ public class ViewNombreCompleto implements Serializable {
         @Column(name = "nombre_empleado")
 	private String nombreEmpleado;
 
-	public ViewNombreCompleto() {
+	public VistaNombreCompleto() {
 	}
 
 	public int getIdEmpleado() {

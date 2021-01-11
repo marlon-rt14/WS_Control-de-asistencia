@@ -37,8 +37,8 @@ public class TipoJpaController implements Serializable {
 	}
 
 	public void create(Tipo tipo) {
-		if (tipo.getFechaHabileList() == null) {
-			tipo.setFechaHabileList(new ArrayList<FechaHabil>());
+		if (tipo.getFechaHabilList() == null) {
+			tipo.setFechaHabilList(new ArrayList<FechaHabil>());
 		}
 		if (tipo.getJornadaList() == null) {
 			tipo.setJornadaList(new ArrayList<Jornada>());
@@ -50,12 +50,12 @@ public class TipoJpaController implements Serializable {
 		try {
 			em = getEntityManager();
 			em.getTransaction().begin();
-			List<FechaHabil> attachedFechaHabileList = new ArrayList<FechaHabil>();
-			for (FechaHabil fechaHabileListFechaHabilToAttach : tipo.getFechaHabileList()) {
-				fechaHabileListFechaHabilToAttach = em.getReference(fechaHabileListFechaHabilToAttach.getClass(), fechaHabileListFechaHabilToAttach.getIdFechaHabil());
-				attachedFechaHabileList.add(fechaHabileListFechaHabilToAttach);
+			List<FechaHabil> attachedFechaHabilList = new ArrayList<FechaHabil>();
+			for (FechaHabil fechaHabilListFechaHabilToAttach : tipo.getFechaHabilList()) {
+				fechaHabilListFechaHabilToAttach = em.getReference(fechaHabilListFechaHabilToAttach.getClass(), fechaHabilListFechaHabilToAttach.getIdFechaHabil());
+				attachedFechaHabilList.add(fechaHabilListFechaHabilToAttach);
 			}
-			tipo.setFechaHabileList(attachedFechaHabileList);
+			tipo.setFechaHabilList(attachedFechaHabilList);
 			List<Jornada> attachedJornadaList = new ArrayList<Jornada>();
 			for (Jornada jornadaListJornadaToAttach : tipo.getJornadaList()) {
 				jornadaListJornadaToAttach = em.getReference(jornadaListJornadaToAttach.getClass(), jornadaListJornadaToAttach.getIdJornada());
@@ -69,13 +69,13 @@ public class TipoJpaController implements Serializable {
 			}
 			tipo.setTipoEmpleadoList(attachedTipoEmpleadoList);
 			em.persist(tipo);
-			for (FechaHabil fechaHabileListFechaHabil : tipo.getFechaHabileList()) {
-				Tipo oldIdTipoOfFechaHabileListFechaHabil = fechaHabileListFechaHabil.getIdTipo();
-				fechaHabileListFechaHabil.setIdTipo(tipo);
-				fechaHabileListFechaHabil = em.merge(fechaHabileListFechaHabil);
-				if (oldIdTipoOfFechaHabileListFechaHabil != null) {
-					oldIdTipoOfFechaHabileListFechaHabil.getFechaHabileList().remove(fechaHabileListFechaHabil);
-					oldIdTipoOfFechaHabileListFechaHabil = em.merge(oldIdTipoOfFechaHabileListFechaHabil);
+			for (FechaHabil fechaHabilListFechaHabil : tipo.getFechaHabilList()) {
+				Tipo oldIdTipoOfFechaHabilListFechaHabil = fechaHabilListFechaHabil.getIdTipo();
+				fechaHabilListFechaHabil.setIdTipo(tipo);
+				fechaHabilListFechaHabil = em.merge(fechaHabilListFechaHabil);
+				if (oldIdTipoOfFechaHabilListFechaHabil != null) {
+					oldIdTipoOfFechaHabilListFechaHabil.getFechaHabilList().remove(fechaHabilListFechaHabil);
+					oldIdTipoOfFechaHabilListFechaHabil = em.merge(oldIdTipoOfFechaHabilListFechaHabil);
 				}
 			}
 			for (Jornada jornadaListJornada : tipo.getJornadaList()) {
@@ -110,31 +110,31 @@ public class TipoJpaController implements Serializable {
 			em = getEntityManager();
 			em.getTransaction().begin();
 			Tipo persistentTipo = em.find(Tipo.class, tipo.getIdTipo());
-			List<FechaHabil> fechaHabileListOld = persistentTipo.getFechaHabileList();
-			List<FechaHabil> fechaHabileListNew = tipo.getFechaHabileList();
+			List<FechaHabil> fechaHabilListOld = persistentTipo.getFechaHabilList();
+			List<FechaHabil> fechaHabilListNew = tipo.getFechaHabilList();
 			List<Jornada> jornadaListOld = persistentTipo.getJornadaList();
 			List<Jornada> jornadaListNew = tipo.getJornadaList();
 			List<TipoEmpleado> tipoEmpleadoListOld = persistentTipo.getTipoEmpleadoList();
 			List<TipoEmpleado> tipoEmpleadoListNew = tipo.getTipoEmpleadoList();
 			List<String> illegalOrphanMessages = null;
-			for (FechaHabil fechaHabileListOldFechaHabil : fechaHabileListOld) {
-				if (!fechaHabileListNew.contains(fechaHabileListOldFechaHabil)) {
+			for (FechaHabil fechaHabilListOldFechaHabil : fechaHabilListOld) {
+				if (!fechaHabilListNew.contains(fechaHabilListOldFechaHabil)) {
 					if (illegalOrphanMessages == null) {
 						illegalOrphanMessages = new ArrayList<String>();
 					}
-					illegalOrphanMessages.add("You must retain FechaHabil " + fechaHabileListOldFechaHabil + " since its idTipo field is not nullable.");
+					illegalOrphanMessages.add("You must retain FechaHabil " + fechaHabilListOldFechaHabil + " since its idTipo field is not nullable.");
 				}
 			}
 			if (illegalOrphanMessages != null) {
 				throw new IllegalOrphanException(illegalOrphanMessages);
 			}
-			List<FechaHabil> attachedFechaHabileListNew = new ArrayList<FechaHabil>();
-			for (FechaHabil fechaHabileListNewFechaHabilToAttach : fechaHabileListNew) {
-				fechaHabileListNewFechaHabilToAttach = em.getReference(fechaHabileListNewFechaHabilToAttach.getClass(), fechaHabileListNewFechaHabilToAttach.getIdFechaHabil());
-				attachedFechaHabileListNew.add(fechaHabileListNewFechaHabilToAttach);
+			List<FechaHabil> attachedFechaHabilListNew = new ArrayList<FechaHabil>();
+			for (FechaHabil fechaHabilListNewFechaHabilToAttach : fechaHabilListNew) {
+				fechaHabilListNewFechaHabilToAttach = em.getReference(fechaHabilListNewFechaHabilToAttach.getClass(), fechaHabilListNewFechaHabilToAttach.getIdFechaHabil());
+				attachedFechaHabilListNew.add(fechaHabilListNewFechaHabilToAttach);
 			}
-			fechaHabileListNew = attachedFechaHabileListNew;
-			tipo.setFechaHabileList(fechaHabileListNew);
+			fechaHabilListNew = attachedFechaHabilListNew;
+			tipo.setFechaHabilList(fechaHabilListNew);
 			List<Jornada> attachedJornadaListNew = new ArrayList<Jornada>();
 			for (Jornada jornadaListNewJornadaToAttach : jornadaListNew) {
 				jornadaListNewJornadaToAttach = em.getReference(jornadaListNewJornadaToAttach.getClass(), jornadaListNewJornadaToAttach.getIdJornada());
@@ -150,14 +150,14 @@ public class TipoJpaController implements Serializable {
 			tipoEmpleadoListNew = attachedTipoEmpleadoListNew;
 			tipo.setTipoEmpleadoList(tipoEmpleadoListNew);
 			tipo = em.merge(tipo);
-			for (FechaHabil fechaHabileListNewFechaHabil : fechaHabileListNew) {
-				if (!fechaHabileListOld.contains(fechaHabileListNewFechaHabil)) {
-					Tipo oldIdTipoOfFechaHabileListNewFechaHabil = fechaHabileListNewFechaHabil.getIdTipo();
-					fechaHabileListNewFechaHabil.setIdTipo(tipo);
-					fechaHabileListNewFechaHabil = em.merge(fechaHabileListNewFechaHabil);
-					if (oldIdTipoOfFechaHabileListNewFechaHabil != null && !oldIdTipoOfFechaHabileListNewFechaHabil.equals(tipo)) {
-						oldIdTipoOfFechaHabileListNewFechaHabil.getFechaHabileList().remove(fechaHabileListNewFechaHabil);
-						oldIdTipoOfFechaHabileListNewFechaHabil = em.merge(oldIdTipoOfFechaHabileListNewFechaHabil);
+			for (FechaHabil fechaHabilListNewFechaHabil : fechaHabilListNew) {
+				if (!fechaHabilListOld.contains(fechaHabilListNewFechaHabil)) {
+					Tipo oldIdTipoOfFechaHabilListNewFechaHabil = fechaHabilListNewFechaHabil.getIdTipo();
+					fechaHabilListNewFechaHabil.setIdTipo(tipo);
+					fechaHabilListNewFechaHabil = em.merge(fechaHabilListNewFechaHabil);
+					if (oldIdTipoOfFechaHabilListNewFechaHabil != null && !oldIdTipoOfFechaHabilListNewFechaHabil.equals(tipo)) {
+						oldIdTipoOfFechaHabilListNewFechaHabil.getFechaHabilList().remove(fechaHabilListNewFechaHabil);
+						oldIdTipoOfFechaHabilListNewFechaHabil = em.merge(oldIdTipoOfFechaHabilListNewFechaHabil);
 					}
 				}
 			}
@@ -225,12 +225,12 @@ public class TipoJpaController implements Serializable {
 				throw new NonexistentEntityException("The tipo with id " + id + " no longer exists.", enfe);
 			}
 			List<String> illegalOrphanMessages = null;
-			List<FechaHabil> fechaHabileListOrphanCheck = tipo.getFechaHabileList();
-			for (FechaHabil fechaHabileListOrphanCheckFechaHabil : fechaHabileListOrphanCheck) {
+			List<FechaHabil> fechaHabilListOrphanCheck = tipo.getFechaHabilList();
+			for (FechaHabil fechaHabilListOrphanCheckFechaHabil : fechaHabilListOrphanCheck) {
 				if (illegalOrphanMessages == null) {
 					illegalOrphanMessages = new ArrayList<String>();
 				}
-				illegalOrphanMessages.add("This Tipo (" + tipo + ") cannot be destroyed since the FechaHabil " + fechaHabileListOrphanCheckFechaHabil + " in its fechaHabileList field has a non-nullable idTipo field.");
+				illegalOrphanMessages.add("This Tipo (" + tipo + ") cannot be destroyed since the FechaHabil " + fechaHabilListOrphanCheckFechaHabil + " in its fechaHabilList field has a non-nullable idTipo field.");
 			}
 			if (illegalOrphanMessages != null) {
 				throw new IllegalOrphanException(illegalOrphanMessages);

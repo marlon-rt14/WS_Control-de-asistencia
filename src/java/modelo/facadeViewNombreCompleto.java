@@ -2,22 +2,22 @@
 package modelo;
 
 import java.util.List;
-import modelo.entidades.ViewNombreCompleto;
+import modelo.entidades.VistaNombreCompleto;
 import vista.interfaces.IViewNombreCompleto;
-import modelo.dao.ViewNombreCompletoJpaController;
+import modelo.dao.VistaNombreCompletoJpaController;
 
 public class facadeViewNombreCompleto extends conexion implements IViewNombreCompleto{
 
-	private static final ViewNombreCompletoJpaController daoNombreCompleto = new ViewNombreCompletoJpaController(emf);
+	private static final VistaNombreCompletoJpaController daoNombreCompleto = new VistaNombreCompletoJpaController(emf);
 	
 	@Override
-	public List<ViewNombreCompleto> getListNombresCompletos() {
-		return daoNombreCompleto.findViewNombreCompletoEntities();
+	public List<VistaNombreCompleto> getListNombresCompletos() {
+		return daoNombreCompleto.findVistaNombreCompletoEntities();
 	}
 
 	@Override
-	public ViewNombreCompleto getNombreCompleto(int id) {
-		return daoNombreCompleto.findViewNombreCompleto(id);
+	public VistaNombreCompleto getNombreCompleto(int id) {
+		return daoNombreCompleto.findVistaNombreCompleto(id);
 	}
 	
 }

@@ -55,7 +55,7 @@ public class FechaHabilJpaController implements Serializable {
 			fechaHabil.setAsistenciaList(attachedAsistenciaList);
 			em.persist(fechaHabil);
 			if (idTipo != null) {
-				idTipo.getFechaHabileList().add(fechaHabil);
+				idTipo.getFechaHabilList().add(fechaHabil);
 				idTipo = em.merge(idTipo);
 			}
 			for (Asistencia asistenciaListAsistencia : fechaHabil.getAsistenciaList()) {
@@ -98,11 +98,11 @@ public class FechaHabilJpaController implements Serializable {
 			fechaHabil.setAsistenciaList(asistenciaListNew);
 			fechaHabil = em.merge(fechaHabil);
 			if (idTipoOld != null && !idTipoOld.equals(idTipoNew)) {
-				idTipoOld.getFechaHabileList().remove(fechaHabil);
+				idTipoOld.getFechaHabilList().remove(fechaHabil);
 				idTipoOld = em.merge(idTipoOld);
 			}
 			if (idTipoNew != null && !idTipoNew.equals(idTipoOld)) {
-				idTipoNew.getFechaHabileList().add(fechaHabil);
+				idTipoNew.getFechaHabilList().add(fechaHabil);
 				idTipoNew = em.merge(idTipoNew);
 			}
 			for (Asistencia asistenciaListOldAsistencia : asistenciaListOld) {
@@ -153,7 +153,7 @@ public class FechaHabilJpaController implements Serializable {
 			}
 			Tipo idTipo = fechaHabil.getIdTipo();
 			if (idTipo != null) {
-				idTipo.getFechaHabileList().remove(fechaHabil);
+				idTipo.getFechaHabilList().remove(fechaHabil);
 				idTipo = em.merge(idTipo);
 			}
 			List<Asistencia> asistenciaList = fechaHabil.getAsistenciaList();

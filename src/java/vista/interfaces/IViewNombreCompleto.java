@@ -1,11 +1,11 @@
 package vista.interfaces;
 
 import java.util.List;
-import modelo.entidades.ViewNombreCompleto;
+import modelo.entidades.VistaNombreCompleto;
 
 public interface IViewNombreCompleto {
 	
-	List<ViewNombreCompleto> getListNombresCompletos();
+	List<VistaNombreCompleto> getListNombresCompletos();
 	
-	ViewNombreCompleto getNombreCompleto(int id);
+	VistaNombreCompleto getNombreCompleto(int id);
 }

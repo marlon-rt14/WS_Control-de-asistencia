@@ -14,15 +14,15 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import modelo.dao.exceptions.NonexistentEntityException;
-import modelo.entidades.ViewNombreCompleto;
+import modelo.entidades.VistaNombreCompleto;
 
 /**
  *
  * @author mjavi
  */
-public class ViewNombreCompletoJpaController implements Serializable {
+public class VistaNombreCompletoJpaController implements Serializable {
 
-	public ViewNombreCompletoJpaController(EntityManagerFactory emf) {
+	public VistaNombreCompletoJpaController(EntityManagerFactory emf) {
 		this.emf = emf;
 	}
 	private EntityManagerFactory emf = null;
@@ -31,12 +31,12 @@ public class ViewNombreCompletoJpaController implements Serializable {
 		return emf.createEntityManager();
 	}
 
-	public void create(ViewNombreCompleto viewNombreCompleto) {
+	public void create(VistaNombreCompleto vistaNombreCompleto) {
 		EntityManager em = null;
 		try {
 			em = getEntityManager();
 			em.getTransaction().begin();
-			em.persist(viewNombreCompleto);
+			em.persist(vistaNombreCompleto);
 			em.getTransaction().commit();
 		} finally {
 			if (em != null) {
@@ -45,19 +45,19 @@ public class ViewNombreCompletoJpaController implements Serializable {
 		}
 	}
 
-	public void edit(ViewNombreCompleto viewNombreCompleto) throws NonexistentEntityException, Exception {
+	public void edit(VistaNombreCompleto vistaNombreCompleto) throws NonexistentEntityException, Exception {
 		EntityManager em = null;
 		try {
 			em = getEntityManager();
 			em.getTransaction().begin();
-			viewNombreCompleto = em.merge(viewNombreCompleto);
+			vistaNombreCompleto = em.merge(vistaNombreCompleto);
 			em.getTransaction().commit();
 		} catch (Exception ex) {
 			String msg = ex.getLocalizedMessage();
 			if (msg == null || msg.length() == 0) {
-				int id = viewNombreCompleto.getIdEmpleado();
-				if (findViewNombreCompleto(id) == null) {
-					throw new NonexistentEntityException("The viewNombreCompleto with id " + id + " no longer exists.");
+				int id = vistaNombreCompleto.getIdEmpleado();
+				if (findVistaNombreCompleto(id) == null) {
+					throw new NonexistentEntityException("The vistaNombreCompleto with id " + id + " no longer exists.");
 				}
 			}
 			throw ex;
@@ -73,14 +73,14 @@ public class ViewNombreCompletoJpaController implements Serializable {
 		try {
 			em = getEntityManager();
 			em.getTransaction().begin();
-			ViewNombreCompleto viewNombreCompleto;
+			VistaNombreCompleto vistaNombreCompleto;
 			try {
-				viewNombreCompleto = em.getReference(ViewNombreCompleto.class, id);
-				viewNombreCompleto.getIdEmpleado();
+				vistaNombreCompleto = em.getReference(VistaNombreCompleto.class, id);
+				vistaNombreCompleto.getIdEmpleado();
 			} catch (EntityNotFoundException enfe) {
-				throw new NonexistentEntityException("The viewNombreCompleto with id " + id + " no longer exists.", enfe);
+				throw new NonexistentEntityException("The vistaNombreCompleto with id " + id + " no longer exists.", enfe);
 			}
-			em.remove(viewNombreCompleto);
+			em.remove(vistaNombreCompleto);
 			em.getTransaction().commit();
 		} finally {
 			if (em != null) {
@@ -89,19 +89,19 @@ public class ViewNombreCompletoJpaController implements Serializable {
 		}
 	}
 
-	public List<ViewNombreCompleto> findViewNombreCompletoEntities() {
-		return findViewNombreCompletoEntities(true, -1, -1);
+	public List<VistaNombreCompleto> findVistaNombreCompletoEntities() {
+		return findVistaNombreCompletoEntities(true, -1, -1);
 	}
 
-	public List<ViewNombreCompleto> findViewNombreCompletoEntities(int maxResults, int firstResult) {
-		return findViewNombreCompletoEntities(false, maxResults, firstResult);
+	public List<VistaNombreCompleto> findVistaNombreCompletoEntities(int maxResults, int firstResult) {
+		return findVistaNombreCompletoEntities(false, maxResults, firstResult);
 	}
 
-	private List<ViewNombreCompleto> findViewNombreCompletoEntities(boolean all, int maxResults, int firstResult) {
+	private List<VistaNombreCompleto> findVistaNombreCompletoEntities(boolean all, int maxResults, int firstResult) {
 		EntityManager em = getEntityManager();
 		try {
 			CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-			cq.select(cq.from(ViewNombreCompleto.class));
+			cq.select(cq.from(VistaNombreCompleto.class));
 			Query q = em.createQuery(cq);
 			if (!all) {
 				q.setMaxResults(maxResults);
@@ -113,20 +113,20 @@ public class ViewNombreCompletoJpaController implements Serializable {
 		}
 	}
 
-	public ViewNombreCompleto findViewNombreCompleto(int id) {
+	public VistaNombreCompleto findVistaNombreCompleto(int id) {
 		EntityManager em = getEntityManager();
 		try {
-			return em.find(ViewNombreCompleto.class, id);
+			return em.find(VistaNombreCompleto.class, id);
 		} finally {
 			em.close();
 		}
 	}
 
-	public int getViewNombreCompletoCount() {
+	public int getVistaNombreCompletoCount() {
 		EntityManager em = getEntityManager();
 		try {
 			CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-			Root<ViewNombreCompleto> rt = cq.from(ViewNombreCompleto.class);
+			Root<VistaNombreCompleto> rt = cq.from(VistaNombreCompleto.class);
 			cq.select(em.getCriteriaBuilder().count(rt));
 			Query q = em.createQuery(cq);
 			return ((Long) q.getSingleResult()).intValue();

@@ -21,7 +21,7 @@ import modelo.entidades.Jornada;
 import modelo.entidades.Materia;
 import modelo.entidades.Tipo;
 import modelo.entidades.TipoEmpleado;
-import modelo.entidades.ViewNombreCompleto;
+import modelo.entidades.VistaNombreCompleto;
 import modelo.entidades.VistaDocente;
 import modelo.entidades.VistaJornada;
 import modelo.facadeAsistencia;
@@ -501,13 +501,13 @@ public class ServicioAsistencia implements IAsistencia, IAulas, IEmpleados, IEst
 	
 //################################################ VISTAS ######################################
 	@Override
-	public List<ViewNombreCompleto> getListNombresCompletos() {
+	public List<VistaNombreCompleto> getListNombresCompletos() {
 		facadeViewNombreCompleto fac = new facadeViewNombreCompleto();
 		return fac.getListNombresCompletos();
 	}
 
 	@Override
-	public ViewNombreCompleto getNombreCompleto(int id) {
+	public VistaNombreCompleto getNombreCompleto(int id) {
 	facadeViewNombreCompleto fac = new facadeViewNombreCompleto();
 		return fac.getNombreCompleto(id);
 	}

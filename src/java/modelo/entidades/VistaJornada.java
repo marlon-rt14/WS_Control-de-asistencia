@@ -129,5 +129,4 @@ public class VistaJornada implements Serializable {
 	}
 
 	
-	
 }
