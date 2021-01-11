@@ -39,11 +39,13 @@ import jdk.nashorn.internal.ir.annotations.Immutable;
 	@NamedQuery(name = "VistaDocente.findByDescripcionAula", query = "SELECT v FROM VistaDocente v WHERE v.descripcionAula = :descripcionAula"),
 	@NamedQuery(name = "VistaDocente.findByDescripcionMateria", query = "SELECT v FROM VistaDocente v WHERE v.descripcionMateria = :descripcionMateria"),
 	@NamedQuery(name = "VistaDocente.findByHoraInicio", query = "SELECT v FROM VistaDocente v WHERE v.horaInicio = :horaInicio"),
-	@NamedQuery(name = "VistaDocente.findByHoraFin", query = "SELECT v FROM VistaDocente v WHERE v.horaFin = :horaFin")})
+	@NamedQuery(name = "VistaDocente.findByHoraFin", query = "SELECT v FROM VistaDocente v WHERE v.horaFin = :horaFin"),
+	@NamedQuery(name = "VistaDocente.findByFecha", query = "SELECT v FROM VistaDocente v WHERE v.fecha = :fecha")})
 public class VistaDocente implements Serializable {
 
 	@Id
 	@GeneratedValue
+	
 	
         @NotNull
         @Column(name = "id_empleado")
@@ -77,6 +79,11 @@ public class VistaDocente implements Serializable {
         @Column(name = "hora_fin")
         @Temporal(TemporalType.TIME)
 	private Date horaFin;
+	@Basic(optional = false)
+        @NotNull
+        @Column(name = "fecha")
+        @Temporal(TemporalType.DATE)
+	private Date fecha;
 
 	public VistaDocente() {
 	}
@@ -111,6 +118,10 @@ public class VistaDocente implements Serializable {
 
 	public Date getHoraFin() {
 		return horaFin;
+	}
+
+	public Date getFecha() {
+		return fecha;
 	}
 
 	

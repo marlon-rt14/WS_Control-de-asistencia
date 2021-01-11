@@ -15,8 +15,8 @@
     <class>modelo.entidades.Tipo</class>
     <class>modelo.entidades.Estado</class>
     <class>modelo.entidades.ViewNombreCompleto</class>
-    <class>modelo.entidades.VistaDocente</class>
     <class>modelo.entidades.VistaJornada</class>
+    <class>modelo.entidades.VistaDocente</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3307/control_asistencia?zeroDateTimeBehavior=CONVERT_TO_NULL"/>
