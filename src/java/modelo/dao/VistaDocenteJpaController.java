@@ -14,6 +14,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import modelo.dao.exceptions.NonexistentEntityException;
+import modelo.dao.exceptions.PreexistingEntityException;
 import modelo.entidades.VistaDocente;
 
 /**
@@ -31,13 +32,18 @@ public class VistaDocenteJpaController implements Serializable {
 		return emf.createEntityManager();
 	}
 
-	public void create(VistaDocente vistaDocente) {
+	public void create(VistaDocente vistaDocente) throws PreexistingEntityException, Exception {
 		EntityManager em = null;
 		try {
 			em = getEntityManager();
 			em.getTransaction().begin();
 			em.persist(vistaDocente);
 			em.getTransaction().commit();
+		} catch (Exception ex) {
+			if (findVistaDocente(vistaDocente.getIdEmpleado()) != null) {
+				throw new PreexistingEntityException("VistaDocente " + vistaDocente + " already exists.", ex);
+			}
+			throw ex;
 		} finally {
 			if (em != null) {
 				em.close();

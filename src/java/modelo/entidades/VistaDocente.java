@@ -10,7 +10,6 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -20,7 +19,6 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import jdk.nashorn.internal.ir.annotations.Immutable;
 
 /**
  *
@@ -28,7 +26,6 @@ import jdk.nashorn.internal.ir.annotations.Immutable;
  */
 @Entity
 @Table(name = "vista_docente")
-@Immutable
 @XmlRootElement
 @NamedQueries({
 	@NamedQuery(name = "VistaDocente.findAll", query = "SELECT v FROM VistaDocente v"),
@@ -43,9 +40,9 @@ import jdk.nashorn.internal.ir.annotations.Immutable;
 	@NamedQuery(name = "VistaDocente.findByFecha", query = "SELECT v FROM VistaDocente v WHERE v.fecha = :fecha")})
 public class VistaDocente implements Serializable {
 
+	private static final long serialVersionUID = 1L;
 	@Id
-	@GeneratedValue
-	
+	@Basic(optional = false)
         @NotNull
         @Column(name = "id_empleado")
 	private int idEmpleado;
@@ -91,37 +88,72 @@ public class VistaDocente implements Serializable {
 		return idEmpleado;
 	}
 
+	public void setIdEmpleado(int idEmpleado) {
+		this.idEmpleado = idEmpleado;
+	}
+
 	public String getDescripcionTipo() {
 		return descripcionTipo;
+	}
+
+	public void setDescripcionTipo(String descripcionTipo) {
+		this.descripcionTipo = descripcionTipo;
 	}
 
 	public String getCedula() {
 		return cedula;
 	}
 
+	public void setCedula(String cedula) {
+		this.cedula = cedula;
+	}
+
 	public String getNombreEmpleado() {
 		return nombreEmpleado;
+	}
+
+	public void setNombreEmpleado(String nombreEmpleado) {
+		this.nombreEmpleado = nombreEmpleado;
 	}
 
 	public String getDescripcionAula() {
 		return descripcionAula;
 	}
 
+	public void setDescripcionAula(String descripcionAula) {
+		this.descripcionAula = descripcionAula;
+	}
+
 	public String getDescripcionMateria() {
 		return descripcionMateria;
+	}
+
+	public void setDescripcionMateria(String descripcionMateria) {
+		this.descripcionMateria = descripcionMateria;
 	}
 
 	public Date getHoraInicio() {
 		return horaInicio;
 	}
 
+	public void setHoraInicio(Date horaInicio) {
+		this.horaInicio = horaInicio;
+	}
+
 	public Date getHoraFin() {
 		return horaFin;
+	}
+
+	public void setHoraFin(Date horaFin) {
+		this.horaFin = horaFin;
 	}
 
 	public Date getFecha() {
 		return fecha;
 	}
 
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
+	}
 	
 }

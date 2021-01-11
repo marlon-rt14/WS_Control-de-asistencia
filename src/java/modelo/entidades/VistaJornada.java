@@ -10,7 +10,6 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -20,7 +19,6 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import jdk.nashorn.internal.ir.annotations.Immutable;
 
 /**
  *
@@ -28,7 +26,6 @@ import jdk.nashorn.internal.ir.annotations.Immutable;
  */
 @Entity
 @Table(name = "vista_jornada")
-@Immutable
 @XmlRootElement
 @NamedQueries({
 	@NamedQuery(name = "VistaJornada.findAll", query = "SELECT v FROM VistaJornada v"),
@@ -43,10 +40,9 @@ import jdk.nashorn.internal.ir.annotations.Immutable;
 	@NamedQuery(name = "VistaJornada.findBySaleSegundoPeriodo", query = "SELECT v FROM VistaJornada v WHERE v.saleSegundoPeriodo = :saleSegundoPeriodo")})
 public class VistaJornada implements Serializable {
 
-	
+	private static final long serialVersionUID = 1L;
 	@Id
-	@GeneratedValue
-	
+	@Basic(optional = false)
         @NotNull
         @Column(name = "id_empleado")
 	private int idEmpleado;
@@ -96,37 +92,72 @@ public class VistaJornada implements Serializable {
 		return idEmpleado;
 	}
 
+	public void setIdEmpleado(int idEmpleado) {
+		this.idEmpleado = idEmpleado;
+	}
+
 	public String getDescripcionTipo() {
 		return descripcionTipo;
+	}
+
+	public void setDescripcionTipo(String descripcionTipo) {
+		this.descripcionTipo = descripcionTipo;
 	}
 
 	public String getCedula() {
 		return cedula;
 	}
 
+	public void setCedula(String cedula) {
+		this.cedula = cedula;
+	}
+
 	public String getNombreEmpleado() {
 		return nombreEmpleado;
+	}
+
+	public void setNombreEmpleado(String nombreEmpleado) {
+		this.nombreEmpleado = nombreEmpleado;
 	}
 
 	public Date getFecha() {
 		return fecha;
 	}
 
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
+	}
+
 	public Date getEntraPrimerPeriodo() {
 		return entraPrimerPeriodo;
+	}
+
+	public void setEntraPrimerPeriodo(Date entraPrimerPeriodo) {
+		this.entraPrimerPeriodo = entraPrimerPeriodo;
 	}
 
 	public Date getSalePrimerPeriodo() {
 		return salePrimerPeriodo;
 	}
 
+	public void setSalePrimerPeriodo(Date salePrimerPeriodo) {
+		this.salePrimerPeriodo = salePrimerPeriodo;
+	}
+
 	public Date getEntraSegundoPeriodo() {
 		return entraSegundoPeriodo;
+	}
+
+	public void setEntraSegundoPeriodo(Date entraSegundoPeriodo) {
+		this.entraSegundoPeriodo = entraSegundoPeriodo;
 	}
 
 	public Date getSaleSegundoPeriodo() {
 		return saleSegundoPeriodo;
 	}
 
+	public void setSaleSegundoPeriodo(Date saleSegundoPeriodo) {
+		this.saleSegundoPeriodo = saleSegundoPeriodo;
+	}
 	
 }
