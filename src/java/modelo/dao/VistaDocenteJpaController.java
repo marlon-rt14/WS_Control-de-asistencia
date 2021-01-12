@@ -40,7 +40,7 @@ public class VistaDocenteJpaController implements Serializable {
 			em.persist(vistaDocente);
 			em.getTransaction().commit();
 		} catch (Exception ex) {
-			if (findVistaDocente(vistaDocente.getIdEmpleado()) != null) {
+			if (findVistaDocente(vistaDocente.getIdViewDocente()) != null) {
 				throw new PreexistingEntityException("VistaDocente " + vistaDocente + " already exists.", ex);
 			}
 			throw ex;
@@ -61,7 +61,7 @@ public class VistaDocenteJpaController implements Serializable {
 		} catch (Exception ex) {
 			String msg = ex.getLocalizedMessage();
 			if (msg == null || msg.length() == 0) {
-				int id = vistaDocente.getIdEmpleado();
+				long id = vistaDocente.getIdViewDocente();
 				if (findVistaDocente(id) == null) {
 					throw new NonexistentEntityException("The vistaDocente with id " + id + " no longer exists.");
 				}
@@ -74,7 +74,7 @@ public class VistaDocenteJpaController implements Serializable {
 		}
 	}
 
-	public void destroy(int id) throws NonexistentEntityException {
+	public void destroy(long id) throws NonexistentEntityException {
 		EntityManager em = null;
 		try {
 			em = getEntityManager();
@@ -82,7 +82,7 @@ public class VistaDocenteJpaController implements Serializable {
 			VistaDocente vistaDocente;
 			try {
 				vistaDocente = em.getReference(VistaDocente.class, id);
-				vistaDocente.getIdEmpleado();
+				vistaDocente.getIdViewDocente();
 			} catch (EntityNotFoundException enfe) {
 				throw new NonexistentEntityException("The vistaDocente with id " + id + " no longer exists.", enfe);
 			}
@@ -119,7 +119,7 @@ public class VistaDocenteJpaController implements Serializable {
 		}
 	}
 
-	public VistaDocente findVistaDocente(int id) {
+	public VistaDocente findVistaDocente(long id) {
 		EntityManager em = getEntityManager();
 		try {
 			return em.find(VistaDocente.class, id);

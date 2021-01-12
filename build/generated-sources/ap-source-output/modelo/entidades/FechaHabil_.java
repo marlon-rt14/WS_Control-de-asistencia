@@ -8,7 +8,7 @@ import javax.persistence.metamodel.StaticMetamodel;
 import modelo.entidades.Asistencia;
 import modelo.entidades.Tipo;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2021-01-11T12:56:40")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2021-01-11T22:37:46")
 @StaticMetamodel(FechaHabil.class)
 public class FechaHabil_ { 
 

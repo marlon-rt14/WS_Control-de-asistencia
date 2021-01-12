@@ -40,7 +40,7 @@ public class VistaJornadaJpaController implements Serializable {
 			em.persist(vistaJornada);
 			em.getTransaction().commit();
 		} catch (Exception ex) {
-			if (findVistaJornada(vistaJornada.getIdEmpleado()) != null) {
+			if (findVistaJornada(vistaJornada.getIdViewJornada()) != null) {
 				throw new PreexistingEntityException("VistaJornada " + vistaJornada + " already exists.", ex);
 			}
 			throw ex;
@@ -61,7 +61,7 @@ public class VistaJornadaJpaController implements Serializable {
 		} catch (Exception ex) {
 			String msg = ex.getLocalizedMessage();
 			if (msg == null || msg.length() == 0) {
-				int id = vistaJornada.getIdEmpleado();
+				long id = vistaJornada.getIdViewJornada();
 				if (findVistaJornada(id) == null) {
 					throw new NonexistentEntityException("The vistaJornada with id " + id + " no longer exists.");
 				}
@@ -74,7 +74,7 @@ public class VistaJornadaJpaController implements Serializable {
 		}
 	}
 
-	public void destroy(int id) throws NonexistentEntityException {
+	public void destroy(long id) throws NonexistentEntityException {
 		EntityManager em = null;
 		try {
 			em = getEntityManager();
@@ -82,7 +82,7 @@ public class VistaJornadaJpaController implements Serializable {
 			VistaJornada vistaJornada;
 			try {
 				vistaJornada = em.getReference(VistaJornada.class, id);
-				vistaJornada.getIdEmpleado();
+				vistaJornada.getIdViewJornada();
 			} catch (EntityNotFoundException enfe) {
 				throw new NonexistentEntityException("The vistaJornada with id " + id + " no longer exists.", enfe);
 			}
@@ -119,7 +119,7 @@ public class VistaJornadaJpaController implements Serializable {
 		}
 	}
 
-	public VistaJornada findVistaJornada(int id) {
+	public VistaJornada findVistaJornada(long id) {
 		EntityManager em = getEntityManager();
 		try {
 			return em.find(VistaJornada.class, id);

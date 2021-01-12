@@ -11,7 +11,7 @@ public class Prueba {
 	public static void main(String[] args) {
 		facadeViewDocente fac = new facadeViewDocente();
 		List<VistaDocente> listaDocentes = fac.getListVistaDocente();
-		listaDocentes.forEach(x -> System.out.println(x.getNombreEmpleado()));
+		listaDocentes.forEach(x -> System.out.println(x.getDescripcionAula()));
 	}
 
 }

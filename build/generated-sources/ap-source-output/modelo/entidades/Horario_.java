@@ -8,7 +8,7 @@ import modelo.entidades.Aula;
 import modelo.entidades.Empleado;
 import modelo.entidades.Materia;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2021-01-11T12:56:40")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2021-01-11T22:37:46")
 @StaticMetamodel(Horario.class)
 public class Horario_ { 
 

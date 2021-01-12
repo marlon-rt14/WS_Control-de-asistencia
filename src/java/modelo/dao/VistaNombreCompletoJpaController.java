@@ -40,7 +40,7 @@ public class VistaNombreCompletoJpaController implements Serializable {
 			em.persist(vistaNombreCompleto);
 			em.getTransaction().commit();
 		} catch (Exception ex) {
-			if (findVistaNombreCompleto(vistaNombreCompleto.getIdEmpleado()) != null) {
+			if (findVistaNombreCompleto(vistaNombreCompleto.getIdViewNombre()) != null) {
 				throw new PreexistingEntityException("VistaNombreCompleto " + vistaNombreCompleto + " already exists.", ex);
 			}
 			throw ex;
@@ -61,7 +61,7 @@ public class VistaNombreCompletoJpaController implements Serializable {
 		} catch (Exception ex) {
 			String msg = ex.getLocalizedMessage();
 			if (msg == null || msg.length() == 0) {
-				int id = vistaNombreCompleto.getIdEmpleado();
+				long id = vistaNombreCompleto.getIdViewNombre();
 				if (findVistaNombreCompleto(id) == null) {
 					throw new NonexistentEntityException("The vistaNombreCompleto with id " + id + " no longer exists.");
 				}
@@ -74,7 +74,7 @@ public class VistaNombreCompletoJpaController implements Serializable {
 		}
 	}
 
-	public void destroy(int id) throws NonexistentEntityException {
+	public void destroy(long id) throws NonexistentEntityException {
 		EntityManager em = null;
 		try {
 			em = getEntityManager();
@@ -82,7 +82,7 @@ public class VistaNombreCompletoJpaController implements Serializable {
 			VistaNombreCompleto vistaNombreCompleto;
 			try {
 				vistaNombreCompleto = em.getReference(VistaNombreCompleto.class, id);
-				vistaNombreCompleto.getIdEmpleado();
+				vistaNombreCompleto.getIdViewNombre();
 			} catch (EntityNotFoundException enfe) {
 				throw new NonexistentEntityException("The vistaNombreCompleto with id " + id + " no longer exists.", enfe);
 			}
@@ -119,7 +119,7 @@ public class VistaNombreCompletoJpaController implements Serializable {
 		}
 	}
 
-	public VistaNombreCompleto findVistaNombreCompleto(int id) {
+	public VistaNombreCompleto findVistaNombreCompleto(long id) {
 		EntityManager em = getEntityManager();
 		try {
 			return em.find(VistaNombreCompleto.class, id);

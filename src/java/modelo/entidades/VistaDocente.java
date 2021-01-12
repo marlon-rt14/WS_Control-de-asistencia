@@ -29,6 +29,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
 	@NamedQuery(name = "VistaDocente.findAll", query = "SELECT v FROM VistaDocente v"),
+	@NamedQuery(name = "VistaDocente.findByIdViewDocente", query = "SELECT v FROM VistaDocente v WHERE v.idViewDocente = :idViewDocente"),
 	@NamedQuery(name = "VistaDocente.findByIdEmpleado", query = "SELECT v FROM VistaDocente v WHERE v.idEmpleado = :idEmpleado"),
 	@NamedQuery(name = "VistaDocente.findByDescripcionTipo", query = "SELECT v FROM VistaDocente v WHERE v.descripcionTipo = :descripcionTipo"),
 	@NamedQuery(name = "VistaDocente.findByCedula", query = "SELECT v FROM VistaDocente v WHERE v.cedula = :cedula"),
@@ -42,6 +43,10 @@ public class VistaDocente implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	@Id
+	@Basic(optional = false)
+        @NotNull
+        @Column(name = "id_view_docente")
+	private long idViewDocente;
 	@Basic(optional = false)
         @NotNull
         @Column(name = "id_empleado")
@@ -82,6 +87,14 @@ public class VistaDocente implements Serializable {
 	private Date fecha;
 
 	public VistaDocente() {
+	}
+
+	public long getIdViewDocente() {
+		return idViewDocente;
+	}
+
+	public void setIdViewDocente(long idViewDocente) {
+		this.idViewDocente = idViewDocente;
 	}
 
 	public int getIdEmpleado() {

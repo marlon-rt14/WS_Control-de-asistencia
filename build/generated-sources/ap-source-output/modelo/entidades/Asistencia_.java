@@ -8,7 +8,7 @@ import modelo.entidades.Estado;
 import modelo.entidades.FechaHabil;
 import modelo.entidades.TipoEmpleado;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2021-01-11T12:56:40")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2021-01-11T22:37:46")
 @StaticMetamodel(Asistencia.class)
 public class Asistencia_ { 
 

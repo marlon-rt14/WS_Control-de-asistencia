@@ -26,12 +26,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
 	@NamedQuery(name = "VistaNombreCompleto.findAll", query = "SELECT v FROM VistaNombreCompleto v"),
+	@NamedQuery(name = "VistaNombreCompleto.findByIdViewNombre", query = "SELECT v FROM VistaNombreCompleto v WHERE v.idViewNombre = :idViewNombre"),
 	@NamedQuery(name = "VistaNombreCompleto.findByIdEmpleado", query = "SELECT v FROM VistaNombreCompleto v WHERE v.idEmpleado = :idEmpleado"),
 	@NamedQuery(name = "VistaNombreCompleto.findByNombreEmpleado", query = "SELECT v FROM VistaNombreCompleto v WHERE v.nombreEmpleado = :nombreEmpleado")})
 public class VistaNombreCompleto implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	@Id
+	@Basic(optional = false)
+        @NotNull
+        @Column(name = "id_view_nombre")
+	private long idViewNombre;
 	@Basic(optional = false)
         @NotNull
         @Column(name = "id_empleado")
@@ -41,6 +46,14 @@ public class VistaNombreCompleto implements Serializable {
 	private String nombreEmpleado;
 
 	public VistaNombreCompleto() {
+	}
+
+	public long getIdViewNombre() {
+		return idViewNombre;
+	}
+
+	public void setIdViewNombre(long idViewNombre) {
+		this.idViewNombre = idViewNombre;
 	}
 
 	public int getIdEmpleado() {
