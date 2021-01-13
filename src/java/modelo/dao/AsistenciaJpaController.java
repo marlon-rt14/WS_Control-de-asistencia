@@ -17,7 +17,6 @@ import modelo.dao.exceptions.NonexistentEntityException;
 import modelo.entidades.Asistencia;
 import modelo.entidades.Empleado;
 import modelo.entidades.Estado;
-import modelo.entidades.FechaHabil;
 import modelo.entidades.TipoEmpleado;
 
 /**
@@ -50,11 +49,6 @@ public class AsistenciaJpaController implements Serializable {
 				idEstado = em.getReference(idEstado.getClass(), idEstado.getIdEstado());
 				asistencia.setIdEstado(idEstado);
 			}
-			FechaHabil idFechaHabil = asistencia.getIdFechaHabil();
-			if (idFechaHabil != null) {
-				idFechaHabil = em.getReference(idFechaHabil.getClass(), idFechaHabil.getIdFechaHabil());
-				asistencia.setIdFechaHabil(idFechaHabil);
-			}
 			TipoEmpleado idTipoEmpleado = asistencia.getIdTipoEmpleado();
 			if (idTipoEmpleado != null) {
 				idTipoEmpleado = em.getReference(idTipoEmpleado.getClass(), idTipoEmpleado.getIdTipoEmpleado());
@@ -68,10 +62,6 @@ public class AsistenciaJpaController implements Serializable {
 			if (idEstado != null) {
 				idEstado.getAsistenciaList().add(asistencia);
 				idEstado = em.merge(idEstado);
-			}
-			if (idFechaHabil != null) {
-				idFechaHabil.getAsistenciaList().add(asistencia);
-				idFechaHabil = em.merge(idFechaHabil);
 			}
 			if (idTipoEmpleado != null) {
 				idTipoEmpleado.getAsistenciaList().add(asistencia);
@@ -95,8 +85,6 @@ public class AsistenciaJpaController implements Serializable {
 			Empleado idEmpleadoNew = asistencia.getIdEmpleado();
 			Estado idEstadoOld = persistentAsistencia.getIdEstado();
 			Estado idEstadoNew = asistencia.getIdEstado();
-			FechaHabil idFechaHabilOld = persistentAsistencia.getIdFechaHabil();
-			FechaHabil idFechaHabilNew = asistencia.getIdFechaHabil();
 			TipoEmpleado idTipoEmpleadoOld = persistentAsistencia.getIdTipoEmpleado();
 			TipoEmpleado idTipoEmpleadoNew = asistencia.getIdTipoEmpleado();
 			if (idEmpleadoNew != null) {
@@ -106,10 +94,6 @@ public class AsistenciaJpaController implements Serializable {
 			if (idEstadoNew != null) {
 				idEstadoNew = em.getReference(idEstadoNew.getClass(), idEstadoNew.getIdEstado());
 				asistencia.setIdEstado(idEstadoNew);
-			}
-			if (idFechaHabilNew != null) {
-				idFechaHabilNew = em.getReference(idFechaHabilNew.getClass(), idFechaHabilNew.getIdFechaHabil());
-				asistencia.setIdFechaHabil(idFechaHabilNew);
 			}
 			if (idTipoEmpleadoNew != null) {
 				idTipoEmpleadoNew = em.getReference(idTipoEmpleadoNew.getClass(), idTipoEmpleadoNew.getIdTipoEmpleado());
@@ -131,14 +115,6 @@ public class AsistenciaJpaController implements Serializable {
 			if (idEstadoNew != null && !idEstadoNew.equals(idEstadoOld)) {
 				idEstadoNew.getAsistenciaList().add(asistencia);
 				idEstadoNew = em.merge(idEstadoNew);
-			}
-			if (idFechaHabilOld != null && !idFechaHabilOld.equals(idFechaHabilNew)) {
-				idFechaHabilOld.getAsistenciaList().remove(asistencia);
-				idFechaHabilOld = em.merge(idFechaHabilOld);
-			}
-			if (idFechaHabilNew != null && !idFechaHabilNew.equals(idFechaHabilOld)) {
-				idFechaHabilNew.getAsistenciaList().add(asistencia);
-				idFechaHabilNew = em.merge(idFechaHabilNew);
 			}
 			if (idTipoEmpleadoOld != null && !idTipoEmpleadoOld.equals(idTipoEmpleadoNew)) {
 				idTipoEmpleadoOld.getAsistenciaList().remove(asistencia);
@@ -186,11 +162,6 @@ public class AsistenciaJpaController implements Serializable {
 			if (idEstado != null) {
 				idEstado.getAsistenciaList().remove(asistencia);
 				idEstado = em.merge(idEstado);
-			}
-			FechaHabil idFechaHabil = asistencia.getIdFechaHabil();
-			if (idFechaHabil != null) {
-				idFechaHabil.getAsistenciaList().remove(asistencia);
-				idFechaHabil = em.merge(idFechaHabil);
 			}
 			TipoEmpleado idTipoEmpleado = asistencia.getIdTipoEmpleado();
 			if (idTipoEmpleado != null) {

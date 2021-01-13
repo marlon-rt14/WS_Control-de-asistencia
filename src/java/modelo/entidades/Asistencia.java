@@ -6,6 +6,7 @@
 package modelo.entidades;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +18,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -32,6 +35,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 	@NamedQuery(name = "Asistencia.findAll", query = "SELECT a FROM Asistencia a"),
 	@NamedQuery(name = "Asistencia.findByIdAsistencia", query = "SELECT a FROM Asistencia a WHERE a.idAsistencia = :idAsistencia"),
 	@NamedQuery(name = "Asistencia.findByMensajeAsistencia", query = "SELECT a FROM Asistencia a WHERE a.mensajeAsistencia = :mensajeAsistencia"),
+	@NamedQuery(name = "Asistencia.findByFecha", query = "SELECT a FROM Asistencia a WHERE a.fecha = :fecha"),
 	@NamedQuery(name = "Asistencia.findByComentarios", query = "SELECT a FROM Asistencia a WHERE a.comentarios = :comentarios"),
 	@NamedQuery(name = "Asistencia.findByObservaciones", query = "SELECT a FROM Asistencia a WHERE a.observaciones = :observaciones")})
 public class Asistencia implements Serializable {
@@ -47,6 +51,9 @@ public class Asistencia implements Serializable {
         @Size(min = 1, max = 150)
         @Column(name = "mensaje_asistencia")
 	private String mensajeAsistencia;
+	@Column(name = "fecha")
+        @Temporal(TemporalType.DATE)
+	private Date fecha;
 	@Size(max = 150)
         @Column(name = "comentarios")
 	private String comentarios;
@@ -59,9 +66,6 @@ public class Asistencia implements Serializable {
 	@JoinColumn(name = "id_estado", referencedColumnName = "id_estado")
         @ManyToOne
 	private Estado idEstado;
-	@JoinColumn(name = "id_fecha_habil", referencedColumnName = "id_fecha_habil")
-        @ManyToOne
-	private FechaHabil idFechaHabil;
 	@JoinColumn(name = "id_tipo_empleado", referencedColumnName = "id_tipo_empleado")
         @ManyToOne
 	private TipoEmpleado idTipoEmpleado;
@@ -94,6 +98,14 @@ public class Asistencia implements Serializable {
 		this.mensajeAsistencia = mensajeAsistencia;
 	}
 
+	public Date getFecha() {
+		return fecha;
+	}
+
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
+	}
+
 	public String getComentarios() {
 		return comentarios;
 	}
@@ -124,14 +136,6 @@ public class Asistencia implements Serializable {
 
 	public void setIdEstado(Estado idEstado) {
 		this.idEstado = idEstado;
-	}
-
-	public FechaHabil getIdFechaHabil() {
-		return idFechaHabil;
-	}
-
-	public void setIdFechaHabil(FechaHabil idFechaHabil) {
-		this.idFechaHabil = idFechaHabil;
 	}
 
 	public TipoEmpleado getIdTipoEmpleado() {

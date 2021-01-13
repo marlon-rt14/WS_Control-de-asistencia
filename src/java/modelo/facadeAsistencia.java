@@ -1,6 +1,7 @@
 
 package modelo;
 
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -39,12 +40,12 @@ public class facadeAsistencia extends conexion implements IAsistencia{
 	}
 
 	@Override
-	public void saveAsistencia(TipoEmpleado tipoEmpleado, Empleado empleado, String mensajeAsistencia, FechaHabil fechaHabil, Estado estado, String comentarios, String observaciones) {
+	public void saveAsistencia(TipoEmpleado tipoEmpleado, Empleado empleado, String mensajeAsistencia, Date fecha, Estado estado, String comentarios, String observaciones) {
 		Asistencia nuevo = new Asistencia();
 		nuevo.setIdTipoEmpleado(tipoEmpleado);
 		nuevo.setIdEmpleado(empleado);
 		nuevo.setMensajeAsistencia(mensajeAsistencia);
-		nuevo.setIdFechaHabil(fechaHabil);
+		nuevo.setFecha(fecha);
 		nuevo.setIdEstado(estado);
 		nuevo.setComentarios(comentarios);
 		nuevo.setObservaciones(observaciones);
@@ -52,13 +53,13 @@ public class facadeAsistencia extends conexion implements IAsistencia{
 	}
 
 	@Override
-	public boolean updateAsistencia(int id, TipoEmpleado tipoEmpleado, Empleado empleado, String mensajeAsistencia, FechaHabil fechaHabil, Estado estado, String comentarios, String observaciones) {
+	public boolean updateAsistencia(int id, TipoEmpleado tipoEmpleado, Empleado empleado, String mensajeAsistencia, Date fecha, Estado estado, String comentarios, String observaciones) {
 		try {
 			Asistencia editar = daoAsistencia.findAsistencia(id);
 			editar.setIdTipoEmpleado(tipoEmpleado);
 			editar.setIdEmpleado(empleado);
 			editar.setMensajeAsistencia(mensajeAsistencia);
-			editar.setIdFechaHabil(fechaHabil);
+			editar.setFecha(fecha);
 			editar.setIdEstado(estado);
 			editar.setComentarios(comentarios);
 			editar.setObservaciones(observaciones);

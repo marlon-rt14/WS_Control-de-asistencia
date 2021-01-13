@@ -7,7 +7,6 @@ package modelo.entidades;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,13 +17,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -53,8 +50,6 @@ public class FechaHabil implements Serializable {
 	@JoinColumn(name = "id_tipo", referencedColumnName = "id_tipo")
         @ManyToOne(optional = false)
 	private Tipo idTipo;
-	@OneToMany(mappedBy = "idFechaHabil")
-	private List<Asistencia> asistenciaList;
 
 	public FechaHabil() {
 	}
@@ -90,15 +85,6 @@ public class FechaHabil implements Serializable {
 
 	public void setIdTipo(Tipo idTipo) {
 		this.idTipo = idTipo;
-	}
-
-	@XmlTransient
-	public List<Asistencia> getAsistenciaList() {
-		return asistenciaList;
-	}
-
-	public void setAsistenciaList(List<Asistencia> asistenciaList) {
-		this.asistenciaList = asistenciaList;
 	}
 
 	@Override

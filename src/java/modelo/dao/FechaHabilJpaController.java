@@ -6,18 +6,16 @@
 package modelo.dao;
 
 import java.io.Serializable;
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import modelo.entidades.Tipo;
-import modelo.entidades.Asistencia;
-import java.util.ArrayList;
-import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import modelo.dao.exceptions.NonexistentEntityException;
 import modelo.entidades.FechaHabil;
+import modelo.entidades.Tipo;
 
 /**
  *
@@ -35,9 +33,6 @@ public class FechaHabilJpaController implements Serializable {
 	}
 
 	public void create(FechaHabil fechaHabil) {
-		if (fechaHabil.getAsistenciaList() == null) {
-			fechaHabil.setAsistenciaList(new ArrayList<Asistencia>());
-		}
 		EntityManager em = null;
 		try {
 			em = getEntityManager();
@@ -47,25 +42,10 @@ public class FechaHabilJpaController implements Serializable {
 				idTipo = em.getReference(idTipo.getClass(), idTipo.getIdTipo());
 				fechaHabil.setIdTipo(idTipo);
 			}
-			List<Asistencia> attachedAsistenciaList = new ArrayList<Asistencia>();
-			for (Asistencia asistenciaListAsistenciaToAttach : fechaHabil.getAsistenciaList()) {
-				asistenciaListAsistenciaToAttach = em.getReference(asistenciaListAsistenciaToAttach.getClass(), asistenciaListAsistenciaToAttach.getIdAsistencia());
-				attachedAsistenciaList.add(asistenciaListAsistenciaToAttach);
-			}
-			fechaHabil.setAsistenciaList(attachedAsistenciaList);
 			em.persist(fechaHabil);
 			if (idTipo != null) {
 				idTipo.getFechaHabilList().add(fechaHabil);
 				idTipo = em.merge(idTipo);
-			}
-			for (Asistencia asistenciaListAsistencia : fechaHabil.getAsistenciaList()) {
-				FechaHabil oldIdFechaHabilOfAsistenciaListAsistencia = asistenciaListAsistencia.getIdFechaHabil();
-				asistenciaListAsistencia.setIdFechaHabil(fechaHabil);
-				asistenciaListAsistencia = em.merge(asistenciaListAsistencia);
-				if (oldIdFechaHabilOfAsistenciaListAsistencia != null) {
-					oldIdFechaHabilOfAsistenciaListAsistencia.getAsistenciaList().remove(asistenciaListAsistencia);
-					oldIdFechaHabilOfAsistenciaListAsistencia = em.merge(oldIdFechaHabilOfAsistenciaListAsistencia);
-				}
 			}
 			em.getTransaction().commit();
 		} finally {
@@ -83,19 +63,10 @@ public class FechaHabilJpaController implements Serializable {
 			FechaHabil persistentFechaHabil = em.find(FechaHabil.class, fechaHabil.getIdFechaHabil());
 			Tipo idTipoOld = persistentFechaHabil.getIdTipo();
 			Tipo idTipoNew = fechaHabil.getIdTipo();
-			List<Asistencia> asistenciaListOld = persistentFechaHabil.getAsistenciaList();
-			List<Asistencia> asistenciaListNew = fechaHabil.getAsistenciaList();
 			if (idTipoNew != null) {
 				idTipoNew = em.getReference(idTipoNew.getClass(), idTipoNew.getIdTipo());
 				fechaHabil.setIdTipo(idTipoNew);
 			}
-			List<Asistencia> attachedAsistenciaListNew = new ArrayList<Asistencia>();
-			for (Asistencia asistenciaListNewAsistenciaToAttach : asistenciaListNew) {
-				asistenciaListNewAsistenciaToAttach = em.getReference(asistenciaListNewAsistenciaToAttach.getClass(), asistenciaListNewAsistenciaToAttach.getIdAsistencia());
-				attachedAsistenciaListNew.add(asistenciaListNewAsistenciaToAttach);
-			}
-			asistenciaListNew = attachedAsistenciaListNew;
-			fechaHabil.setAsistenciaList(asistenciaListNew);
 			fechaHabil = em.merge(fechaHabil);
 			if (idTipoOld != null && !idTipoOld.equals(idTipoNew)) {
 				idTipoOld.getFechaHabilList().remove(fechaHabil);
@@ -104,23 +75,6 @@ public class FechaHabilJpaController implements Serializable {
 			if (idTipoNew != null && !idTipoNew.equals(idTipoOld)) {
 				idTipoNew.getFechaHabilList().add(fechaHabil);
 				idTipoNew = em.merge(idTipoNew);
-			}
-			for (Asistencia asistenciaListOldAsistencia : asistenciaListOld) {
-				if (!asistenciaListNew.contains(asistenciaListOldAsistencia)) {
-					asistenciaListOldAsistencia.setIdFechaHabil(null);
-					asistenciaListOldAsistencia = em.merge(asistenciaListOldAsistencia);
-				}
-			}
-			for (Asistencia asistenciaListNewAsistencia : asistenciaListNew) {
-				if (!asistenciaListOld.contains(asistenciaListNewAsistencia)) {
-					FechaHabil oldIdFechaHabilOfAsistenciaListNewAsistencia = asistenciaListNewAsistencia.getIdFechaHabil();
-					asistenciaListNewAsistencia.setIdFechaHabil(fechaHabil);
-					asistenciaListNewAsistencia = em.merge(asistenciaListNewAsistencia);
-					if (oldIdFechaHabilOfAsistenciaListNewAsistencia != null && !oldIdFechaHabilOfAsistenciaListNewAsistencia.equals(fechaHabil)) {
-						oldIdFechaHabilOfAsistenciaListNewAsistencia.getAsistenciaList().remove(asistenciaListNewAsistencia);
-						oldIdFechaHabilOfAsistenciaListNewAsistencia = em.merge(oldIdFechaHabilOfAsistenciaListNewAsistencia);
-					}
-				}
 			}
 			em.getTransaction().commit();
 		} catch (Exception ex) {
@@ -155,11 +109,6 @@ public class FechaHabilJpaController implements Serializable {
 			if (idTipo != null) {
 				idTipo.getFechaHabilList().remove(fechaHabil);
 				idTipo = em.merge(idTipo);
-			}
-			List<Asistencia> asistenciaList = fechaHabil.getAsistenciaList();
-			for (Asistencia asistenciaListAsistencia : asistenciaList) {
-				asistenciaListAsistencia.setIdFechaHabil(null);
-				asistenciaListAsistencia = em.merge(asistenciaListAsistencia);
 			}
 			em.remove(fechaHabil);
 			em.getTransaction().commit();

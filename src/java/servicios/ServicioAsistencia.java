@@ -87,12 +87,12 @@ public class ServicioAsistencia implements IAsistencia, IAulas, IEmpleados, IEst
 		@WebParam(name = "tipoEmpleado") TipoEmpleado tipoEmpleado,
 		@WebParam(name = "empleado") Empleado empleado,
 		@WebParam(name = "mensajeAsistencia") String mensajeAsistencia,
-		@WebParam(name = "fechaHabil") FechaHabil fechaHabil,
+		@WebParam(name = "fecha") Date fecha,
 		@WebParam(name = "estado") Estado estado,
 		@WebParam(name = "comentarios") String comentarios,
 		@WebParam(name = "observaciones") String observaciones) {
 		facadeAsistencia fac = new facadeAsistencia();
-		fac.saveAsistencia(tipoEmpleado, empleado, mensajeAsistencia, fechaHabil, estado, comentarios, observaciones);
+		fac.saveAsistencia(tipoEmpleado, empleado, mensajeAsistencia, fecha, estado, comentarios, observaciones);
 	}
 
 	@Override
@@ -102,12 +102,12 @@ public class ServicioAsistencia implements IAsistencia, IAulas, IEmpleados, IEst
 		@WebParam(name = "tipoEmpleado") TipoEmpleado tipoEmpleado,
 		@WebParam(name = "empleado") Empleado empleado,
 		@WebParam(name = "mensajeAsistencia") String mensajeAsistencia,
-		@WebParam(name = "fechaHabil") FechaHabil fechaHabil,
+		@WebParam(name = "fecha") Date fecha,
 		@WebParam(name = "estado") Estado estado,
 		@WebParam(name = "comentarios") String comentarios,
 		@WebParam(name = "observaciones") String observaciones) {
 		facadeAsistencia fac = new facadeAsistencia();
-		return fac.updateAsistencia(id, tipoEmpleado, empleado, mensajeAsistencia, fechaHabil, estado, comentarios, observaciones);
+		return fac.updateAsistencia(id, tipoEmpleado, empleado, mensajeAsistencia, fecha, estado, comentarios, observaciones);
 	}
 
 //##################################################################### AULAS ###########################################################

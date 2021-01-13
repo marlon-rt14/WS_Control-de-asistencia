@@ -1,5 +1,6 @@
 package vista.interfaces;
 
+import java.util.Date;
 import java.util.List;
 import modelo.entidades.Asistencia;
 import modelo.entidades.TipoEmpleado;
@@ -20,11 +21,11 @@ public interface IAsistencia {
 
 	//SAVE ASISTENCIA
 	void saveAsistencia(TipoEmpleado tipoEmpleado, Empleado empleado, String mensajeAsistencia,
-		FechaHabil fechaHabil, Estado estado, String comentarios, String observaciones);
+		Date fecha, Estado estado, String comentarios, String observaciones);
 
 	//UPDATE ASISTENCIA
 	boolean updateAsistencia(int id, TipoEmpleado tipoEmpleado, Empleado empleado,
-		String mensajeAsistencia, FechaHabil fechaHabil, Estado estado,
+		String mensajeAsistencia, Date fecha, Estado estado,
 		String comentarios, String observaciones);
 
 }
